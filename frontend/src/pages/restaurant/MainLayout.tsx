@@ -1,69 +1,118 @@
-import { Button } from "../../components/ui/button";
-import { Field, FieldLabel } from "@/components/ui/field";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
+  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useGetRestaurant } from "./hooks/useGetRestaurant";
+import { useState } from "react";
+import type { Props } from "./hooks/useGetRestaurant";
+import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 export default function MainLayout() {
+  const [page, setPage] = useState(1);
+  const [searchName, setSearchName] = useState("");
+  const [searchCuisine, setSearchCuisine] = useState("");
+  const { data } = useGetRestaurant({
+    page,
+    nameQuery: searchName,
+    cuisineQuery: searchCuisine,
+  } as Props);
+  const maxVisiblePages = 5;
+  const totalPages = data?.totalPages || 1;
+
+  let startPage = Math.max(1, page - Math.floor(maxVisiblePages / 2));
+  let endPage = startPage + maxVisiblePages - 1;
+
+  if (endPage > totalPages) {
+    endPage = totalPages;
+    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+  }
+
+  const pages = [];
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i);
+  }
+  const handleClick = () => {
+    <Link to={`/restaurant/detail/${data?.restaurants._id}`}>
+      {data?.restaurants.name}
+    </Link>;
+  };
   return (
     <div className="mx-10 mt-10 max-w-full h-screen">
       <div className="bg-slate-50 h-full w-full pl-16">
-        <h1 className="text-3xl">Restaurant</h1>
-        <table className="w-5/6 outline-1 rounded-sm border-separate">
+        <h1 className="text-3xl mb-4">Restaurant</h1>
+        <p className="mb-4">{data?.total} results</p>
+        <span className="flex gap-4 mb-4">
+          <Input
+            className="w-54"
+            placeholder="Search by name..."
+            onChange={(e) => setSearchName(e.target.value)}
+          ></Input>
+          <Input
+            className="w-54"
+            placeholder="Filter by cuisine..."
+            onChange={(e) => setSearchCuisine(e.target.value)}
+          ></Input>
+        </span>
+        <table className="w-5/6 outline-3 rounded-sm border-gray-500 border-separate text-sm whitespace-nowrap ">
           <thead className="bg-slate-50 ">
-            <tr className="border-separate">
-              <th>Name</th>
-              <th>Cuisine</th>
-              <th>Borough</th>
-              <th>Address</th>
+            <tr>
+              <th className="border border-gray-300 px-2 py-1 w-60">Name</th>
+              <th className="border border-gray-300 px-2 py-1 max-w-md">
+                Cuisine
+              </th>
+              <th className="border border-gray-300 px-2 py-1">Borough</th>
+              <th className="border border-gray-300 px-2 py-1">Address</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>name?</td>
-              <td>cuisine?</td>
-              <td>boroough?</td>
-              <td>address?</td>
-            </tr>
+            {data?.restaurants?.map((restaurant: any) => (
+              <tr key={restaurant._id}>
+                <td
+                  onClick={handleClick}
+                  className="border border-gray-300 px-2 py-1 hover:bg-gray-100 cursor-pointer"
+                >
+                  {restaurant.name}
+                </td>
+                <td className="border border-gray-300 px-2 py-1">
+                  {restaurant.cuisine}
+                </td>
+                <td className="border border-gray-300 px-2 py-1">
+                  {restaurant.borough}
+                </td>
+                <td className="border border-gray-300 px-2 py-1">
+                  {restaurant.address?.building} {restaurant.address?.street}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
-        <div className="flex items-center justify-between gap-4 bottom-1">
-          <Field orientation="horizontal" className="w-fit">
-            <FieldLabel htmlFor="select-rows-per-page">
-              Rows per page
-            </FieldLabel>
-            <Select defaultValue="25">
-              <SelectTrigger className="w-20" id="select-rows-per-page">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent align="start">
-                <SelectGroup>
-                  <SelectItem value="10">10</SelectItem>
-                  <SelectItem value="25">25</SelectItem>
-                  <SelectItem value="50">50</SelectItem>
-                  <SelectItem value="100">100</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
-          <Pagination className="mx-0 w-auto">
+        <div className="flex items-center gap-4 mt-4">
+          <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious href="#" />
+                <PaginationPrevious
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                />
               </PaginationItem>
+
+              {pages.map((p) => (
+                <PaginationItem key={p}>
+                  <PaginationLink
+                    isActive={page === p}
+                    onClick={() => setPage(p)}
+                  >
+                    {p}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
               <PaginationItem>
-                <PaginationNext href="#" />
+                <PaginationNext
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                />
               </PaginationItem>
             </PaginationContent>
           </Pagination>

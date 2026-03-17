@@ -14,6 +14,7 @@ const App = () => (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainLayout />} />
+        <Route path="/restaurant/detail/:id" element={<div>Detail Page</div>} />
       </Routes>
     </BrowserRouter>
   </QueryClientProvider>
