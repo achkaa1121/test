@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { restaurant, detail } from "./controller";
 
-export const router = () => {
-  const router = Router();
-  router.get("/", restaurant);
-  router.get("/detail", detail);
-};
+const router = Router();
+
+router.get("/list", restaurant);
+router.get("/detail", detail);
+
+export default router;
