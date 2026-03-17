@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap");
+a {
+  cursor: pointer;
+}
+.rest-card {
+  font-family: "Lora";
+  padding: 32px;
+  border-radius: 16px;
+  background-color: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+.rest-card > h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+.rest-card > h1 > span {
+  color: #ff6347;
+  display: inline-block;
+  --circle-size: 60px;
+  border-radius: 50%;
+  width: var(--circle-size);
+  height: var(--circle-size);
+  text-align: center;
+  background: #ffe2e3;
+  color: #c10008;
+  font-weight: normal;
+  line-height: var(--circle-size);
+  margin-right: 15px;
+}
+.rest-card > div {
+  display: flex;
+  gap: 16px;
+  margin: 20px 0;
+}
+.rest-card > div > p {
+  border-radius: 20px;
+  height: 40px;
+  padding: 0 20px;
+  line-height: 36px;
+}
+.rest-card > div > p:first-child {
+  background-color: #eff6ff;
+  flex-grow: 1;
+  color: #1447e6;
+  font-weight: 600;
+  border: 1px solid #dbebff;
+}
+.rest-card > div > p:last-child {
+  background-color: #f3f4f6;
+  color: #666;
+  font-weight: 600;
+}
+.rest-card > hr {
+  border-color: #eee;
+  margin-bottom: 20px;
+}
+.rest-card > p {
+  margin: 0;
+}
+.rest-card > p > b {
+  display: block;
+  text-transform: uppercase;
+  color: #999;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.rest-card > p > span {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 1.4rem;
+  color: #333;
+}
+.rest-list {
+  border-collapse: collapse;
+  border-spacing: 0 8px;
+}
+.rest-list tr {
+  cursor: pointer;
+}
+.rest-list tr:hover > td {
+  background-color: var(--color-gray-100);
+}
+.rest-list tr > td {
+  border: 1px solid var(--color-gray-300);
+  padding: 6px;
+}

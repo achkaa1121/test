@@ -10,11 +10,13 @@ import { useGetRestaurant } from "./hooks/useGetRestaurant";
 import { useState } from "react";
 import type { Props } from "./hooks/useGetRestaurant";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import "../detail/style.css";
 export default function MainLayout() {
   const [page, setPage] = useState(1);
   const [searchName, setSearchName] = useState("");
   const [searchCuisine, setSearchCuisine] = useState("");
+  const navigate = useNavigate();
   const { data } = useGetRestaurant({
     page,
     nameQuery: searchName,
@@ -35,14 +37,9 @@ export default function MainLayout() {
   for (let i = startPage; i <= endPage; i++) {
     pages.push(i);
   }
-  const handleClick = () => {
-    <Link to={`/restaurant/detail/${data?.restaurants._id}`}>
-      {data?.restaurants.name}
-    </Link>;
-  };
   return (
-    <div className="mx-10 mt-10 max-w-full h-screen">
-      <div className="bg-slate-50 h-full w-full pl-16">
+    <div className="mx-auto mt-10 w-[1000px] h-screen">
+      <div className="bg-slate-50 h-full w-full p-[20px] rounded-lg">
         <h1 className="text-3xl mb-4">Restaurant</h1>
         <p className="mb-4">{data?.total} results</p>
         <span className="flex gap-4 mb-4">
@@ -57,33 +54,33 @@ export default function MainLayout() {
             onChange={(e) => setSearchCuisine(e.target.value)}
           ></Input>
         </span>
-        <table className="w-5/6 outline-3 rounded-sm border-gray-500 border-separate text-sm whitespace-nowrap ">
+        <table className="w-full rounded-sm border-gray-500 text-sm whitespace-nowrap bg-white rest-list">
           <thead className="bg-slate-50 ">
             <tr>
-              <th className="border border-gray-300 px-2 py-1 w-60">Name</th>
-              <th className="border border-gray-300 px-2 py-1 max-w-md">
+              <th className="border border-gray-300 px-2 py-1 w-[200px]">
+                Name
+              </th>
+              <th className="border border-gray-300 px-2 py-1 w-auto">
                 Cuisine
               </th>
-              <th className="border border-gray-300 px-2 py-1">Borough</th>
-              <th className="border border-gray-300 px-2 py-1">Address</th>
+              <th className="border border-gray-300 px-2 py-1 w-[150px]">
+                Borough
+              </th>
+              <th className="border border-gray-300 px-2 py-1 w-[200px]">
+                Address
+              </th>
             </tr>
           </thead>
           <tbody>
             {data?.restaurants?.map((restaurant: any) => (
-              <tr key={restaurant._id}>
-                <td
-                  onClick={handleClick}
-                  className="border border-gray-300 px-2 py-1 hover:bg-gray-100 cursor-pointer"
-                >
-                  {restaurant.name}
-                </td>
-                <td className="border border-gray-300 px-2 py-1">
-                  {restaurant.cuisine}
-                </td>
-                <td className="border border-gray-300 px-2 py-1">
-                  {restaurant.borough}
-                </td>
-                <td className="border border-gray-300 px-2 py-1">
+              <tr
+                key={restaurant._id}
+                onClick={() => navigate(`/restaurant/detail/${restaurant._id}`)}
+              >
+                <td>{restaurant.name}</td>
+                <td>{restaurant.cuisine}</td>
+                <td>{restaurant.borough}</td>
+                <td>
                   {restaurant.address?.building} {restaurant.address?.street}
                 </td>
               </tr>

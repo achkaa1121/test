@@ -4,6 +4,6 @@ import { restaurant, detail } from "./controller";
 const router = Router();
 
 router.get("/list", restaurant);
-router.get("/detail", detail);
+router.get("/detail/:id", detail);
 
 export default router;

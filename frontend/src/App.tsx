@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./pages/restaurant/MainLayout";
+import { DetailPage } from "./pages/detail/DetailPage";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -14,7 +15,7 @@ const App = () => (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainLayout />} />
-        <Route path="/restaurant/detail/:id" element={<div>Detail Page</div>} />
+        <Route path="/restaurant/detail/:id" element={<DetailPage />} />
       </Routes>
     </BrowserRouter>
   </QueryClientProvider>
